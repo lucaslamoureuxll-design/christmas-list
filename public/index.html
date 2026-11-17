@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>🎄 Liste de Noël de Lucas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap">
+  <style>
+    :root {
+      color-scheme: dark;
+      /* Layout: responsive auto-fill grid, dark Christmas night theme */
+      --bg:  #0b1829;
+      --sf:  #142240;
+      --fg:  #f0e8d8;
+      --fg2: #7a93b5;
+      --gold:#d4a820;
+      --gd:  rgba(212,168,32,.15);
+      --red: #c0341c;
+      --redh:#d84020;
+      --grn: #2a7a3a;
+      --bdr: rgba(212,168,32,.18);
+      --sh:  0 8px 32px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{min-height:100%}
+    body{
+      background:var(--bg);color:var(--fg);
+      font-family:'Inter',system-ui,sans-serif;
+      overflow-x:hidden;
+    }
+    /* Snow */
+    #snow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .flake{position:absolute;top:-1.5em;color:rgba(255,255,255,.55);
+      animation:fall linear infinite;user-select:none}
+    @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+    @media(prefers-reduced-motion:reduce){.flake{display:none}}
+    /* Page */
+    .page{
+      position:relative;z-index:1;max-width:1200px;margin:0 auto;
+      padding-left:max(16px,env(safe-area-inset-left,0px));
+      padding-right:max(16px,env(safe-area-inset-right,0px));
+    }
+    /* Header */
+    header{text-align:center;padding:3rem 0 2rem}
+    .tree{font-size:3.5rem;display:block;margin-bottom:.9rem;
+      filter:drop-shadow(0 0 20px rgba(80,220,80,.4))}
+    h1{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(1.6rem,5vw,2.8rem);font-weight:700;
+      color:var(--gold);text-shadow:0 0 32px rgba(212,168,32,.4);
+      text-wrap:balance;letter-spacing:-.02em;margin-bottom:.55rem
+    }
+    .sub{color:var(--fg2);font-size:.95rem;margin-bottom:1.2rem}
+    .badge{
+      display:inline-flex;align-items:center;gap:.45rem;
+      background:var(--gd);border:1px solid var(--bdr);
+      border-radius:20px;padding:.4rem 1rem;
+      font-size:.8rem;color:var(--gold);font-weight:600
+    }
+    /* Grid */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:1.25rem;padding-bottom:4rem
+    }
+    /* Card */
+    .card{
+      background:var(--sf);border:1px solid var(--bdr);
+      border-radius:16px;padding:1.4rem;box-shadow:var(--sh);
+      position:relative;overflow:hidden;
+      transition:transform .2s,border-color .2s,box-shadow .2s
+    }
+    .card:not(.res):hover{
+      transform:translateY(-4px);
+      border-color:rgba(212,168,32,.5);
+      box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 20px rgba(212,168,32,.08)
+    }
+    .card.res{opacity:.48;filter:grayscale(55%)}
+    .prod-img{
+      width:100%;height:160px;object-fit:cover;
+      border-radius:10px;margin-bottom:.85rem;
+      background:rgba(255,255,255,.04);display:block
+    }
+    @media(max-width:540px){.prod-img{height:120px}}
+    .icon{font-size:2.2rem;display:block;margin-bottom:.7rem}
+    .cat{font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;
+      color:var(--gold);font-weight:600;margin-bottom:.35rem}
+    .name{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;
+      font-weight:600;line-height:1.3;margin-bottom:.3rem;text-wrap:balance}
+    .dtl{font-size:.8rem;color:var(--fg2);margin-bottom:.55rem}
+    .price{font-size:1.4rem;font-weight:700;color:var(--gold);
+      font-variant-numeric:tabular-nums;margin-bottom:.85rem;
+      font-family:'Space Grotesk',sans-serif}
+    .lnk{
+      display:inline-flex;align-items:center;gap:.3rem;
+      color:var(--fg2);text-decoration:none;font-size:.78rem;
+      margin-bottom:.85rem;transition:color .15s
+    }
+    .lnk:hover{color:var(--gold)}
+    .btn-r{
+      width:100%;padding:.65rem 1rem;background:var(--red);color:#fff;
+      border:none;border-radius:10px;font-size:.88rem;font-weight:600;
+      cursor:pointer;transition:background .15s,transform .1s;font-family:inherit
+    }
+    .btn-r:hover{background:var(--redh)}
+    .btn-r:active{transform:scale(.97)}
+    .rby{
+      display:flex;align-items:center;gap:.4rem;font-size:.82rem;
+      color:var(--fg2);padding:.5rem .75rem;
+      background:rgba(255,255,255,.05);border-radius:8px
+    }
+    .rby strong{color:var(--fg)}
+    .ribbon{
+      position:absolute;top:18px;right:-30px;
+      background:var(--red);color:#fff;
+      font-size:.65rem;font-weight:700;padding:4px 44px;
+      transform:rotate(45deg);text-transform:uppercase;
+      letter-spacing:.08em;box-shadow:0 2px 8px rgba(0,0,0,.3)
+    }
+    /* Loading */
+    .ld{text-align:center;padding:4rem 1rem;color:var(--fg2);font-size:.95rem}
+    .spin{display:inline-block;width:32px;height:32px;
+      border:2px solid var(--bdr);border-top-color:var(--gold);
+      border-radius:50%;animation:spin .8s linear infinite;margin-bottom:1rem}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    /* Modal overlay */
+    .ov{
+      position:fixed;inset:0;background:rgba(0,0,0,.72);
+      display:flex;align-items:center;justify-content:center;z-index:100;
+      padding:max(16px,env(safe-area-inset-left,0px));
+      backdrop-filter:blur(6px)
+    }
+    .modal{
+      background:#1a2d50;border:1px solid rgba(212,168,32,.3);
+      border-radius:20px;padding:2rem;width:min(420px,100%);
+      box-shadow:0 24px 80px rgba(0,0,0,.6);animation:min .2s ease
+    }
+    @keyframes min{from{transform:translateY(16px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+    .mi{font-size:2rem;margin-bottom:.55rem}
+    .modal h2{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;
+      color:var(--gold);margin-bottom:.35rem;text-wrap:balance}
+    .modal p{font-size:.88rem;color:var(--fg2);margin-bottom:1.3rem;line-height:1.5}
+    input[type=text]{
+      width:100%;padding:.75rem 1rem;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+      border-radius:10px;color:var(--fg);font-size:1rem;font-family:inherit;
+      outline:none;transition:border-color .15s;margin-bottom:1.2rem
+    }
+    input[type=text]:focus{border-color:var(--gold)}
+    input[type=text].err{border-color:var(--red)}
+    input[type=text]::placeholder{color:var(--fg2)}
+    .mbtns{display:flex;gap:.75rem}
+    .bcl{
+      flex:1;padding:.65rem;background:transparent;color:var(--fg2);
+      border:1px solid rgba(255,255,255,.12);border-radius:10px;cursor:pointer;
+      font-size:.88rem;font-family:inherit;transition:background .15s
+    }
+    .bcl:hover{background:rgba(255,255,255,.05)}
+    .bok{
+      flex:2;padding:.65rem;background:var(--red);color:#fff;border:none;
+      border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600;
+      font-family:inherit;transition:background .15s
+    }
+    .bok:hover:not(:disabled){background:var(--redh)}
+    .bok:disabled{opacity:.5;cursor:not-allowed}
+    /* Toast */
+    .toast{
+      position:fixed;
+      bottom:max(1.5rem,env(safe-area-inset-bottom,1.5rem));
+      left:50%;transform:translateX(-50%);
+      padding:.8rem 1.4rem;border-radius:12px;font-size:.9rem;font-weight:600;
+      z-index:200;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);
+      animation:ta 3.2s forwards;pointer-events:none
+    }
+    .tok{background:var(--grn);color:#fff}
+    .terr{background:var(--red);color:#fff}
+    @keyframes ta{
+      0%{opacity:0;transform:translateX(-50%) translateY(8px)}
+      12%{opacity:1;transform:translateX(-50%) translateY(0)}
+      78%{opacity:1;transform:translateX(-50%) translateY(0)}
+      100%{opacity:0;transform:translateX(-50%) translateY(8px)}
+    }
+    @media(max-width:540px){
+      .grid{grid-template-columns:1fr 1fr;gap:.9rem}
+      .card{padding:1rem}
+      .price{font-size:1.1rem}
+    }
+    @media(max-width:360px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<div id="snow" aria-hidden="true"></div>
+
+<div class="page">
+  <header>
+    <span class="tree" aria-hidden="true">🎄</span>
+    <h1>Liste de Noël de Lucas</h1>
+    <p class="sub">Réservez un cadeau pour qu'il ne soit pas offert deux fois ✨</p>
+    <div class="badge" id="badge" hidden>
+      <span aria-hidden="true">🎁</span>
+      <span id="badge-txt"></span>
+    </div>
+  </header>
+  <div id="app">
+    <div class="ld"><div class="spin"></div><div>Chargement…</div></div>
+  </div>
+</div>
+
+<div class="ov" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-h">
+    <div class="mi" id="m-icon" aria-hidden="true"></div>
+    <h2 id="modal-h"></h2>
+    <p>Entrez votre prénom pour réserver ce cadeau. Les autres verront qu'il est déjà pris 🎁</p>
+    <input type="text" id="name-inp" placeholder="Votre prénom…" maxlength="30" autocomplete="given-name">
+    <div class="mbtns">
+      <button class="bcl" id="btn-cancel">Annuler</button>
+      <button class="bok" id="btn-ok">🎁 Réserver</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const GIFTS = [
+  {id:'knit-808',               name:'Knit 808 Vision',           img:'https://808.vision/cdn/shop/files/13565E2C-5E07-4CD1-9971-A64746ABB393.png?v=1772642411',                                                       price:'80€',       shop:'808 Vision',    url:'https://808.vision/products/knit-mesh-black',                                                       cat:'Accessoire',  dtl:'',          icon:'🧢'},
+  {id:'pull-rose-scuffers',     name:'Pull Rose Scuffers',         img:'https://scuffers.com/cdn/shop/files/EmptyName6_75bb776a-fad5-4f7c-871e-b087d2ac3755.jpg?height=600&v=1786968853',                               price:'89€',       shop:'Scuffers',       url:'https://scuffers.com/collections/hoodies/products/original-pink-hoodie',                           cat:'Vêtement',    dtl:'Taille M',  icon:'🌸'},
+  {id:'pull-mariniere-scuffers',name:'Pull Marinière Scuffers',    img:'https://scuffers.com/cdn/shop/files/ECOM_1.jpg?height=600&v=1788867488',                                                                         price:'89€',       shop:'Scuffers',       url:'https://scuffers.com/collections/hoodies/products/carpet-yellow-hoodie',                           cat:'Vêtement',    dtl:'Taille M',  icon:'🎨'},
+  {id:'clavier-logitech',       name:'Clavier Logitech Sans Fil',  img:'https://m.media-amazon.com/images/I/61wuD7T-WLL._AC_SL500_.jpg',                                                                                price:'119,99€',   shop:'Amazon',         url:'https://www.amazon.fr/dp/B0D3HHXB9Y/',                                                              cat:'Tech',         dtl:'',          icon:'⌨️'},
+  {id:'jogging-divinbydivin',   name:'Jogging DivinByDivin',       img:'https://divinbydivin.com/cdn/shop/files/jogg-black_277664a0-caf1-4d7c-886e-ab8cd04d8ae6.jpg?v=1733221089',                                      price:'109,95€',   shop:'Divin By Divin', url:'https://divinbydivin.com/products/black-line-jogger',                                                   cat:'Vêtement',    dtl:'Taille M',  icon:'🖤'},
+  {id:'akimbo-lows',            name:'Akimbo Lows',                img:'https://www.vicinityclo.de/cdn/shop/files/Untitled-1_0075_Layer0copy3.jpg?v=1739264338',                                                        price:'24,99€',    shop:'Vicinity',       url:'https://www.vicinityclo.de/products/akimbo-lows-serge-blues',                                           cat:'Chaussures',  dtl:'Taille 43', icon:'👟'},
+  {id:'pantalon-camo-beige',    name:'Pantalon Camo Beige',        img:'https://static.zara.net/assets/public/a6fe/c4ce/2a224aea8919/e46734810d1e/06917300021-p/06917300021-p.jpg?ts=1786375129205&w=560',               price:'22,99€',    shop:'Zara',           url:'https://www.zara.com/fr/fr/pantalon-coupe-ballon-imprime-abstrait-p06917300.html?v1=550292797',       cat:'Vêtement',    dtl:'',          icon:'🍂'},
+  {id:'jean-camo-gris',         name:'Jean Camo Gris Beige',       img:'https://static.zara.net/assets/public/2830/b0c9/961b464c9636/a1119684cd6d/02005805806-p/02005805806-p.jpg?ts=1791283248414&w=560',               price:'39,95€',    shop:'Zara',           url:'https://www.zara.com/fr/fr/pantalon-coupe-decontractee-imprime-abstrait-p02005805.html?v1=568076212', cat:'Vêtement',    dtl:'',          icon:'🩶'},
+]
+
+// Snow animation
+;(function(){
+  const c=['❄','❅','❆','·','•','✦'],s=document.getElementById('snow')
+  for(let i=0;i<48;i++){
+    const f=document.createElement('span')
+    f.className='flake';f.textContent=c[i%c.length];f.setAttribute('aria-hidden','true')
+    f.style.cssText=`left:${(Math.random()*100).toFixed(1)}vw;font-size:${(Math.random()*.7+.4).toFixed(2)}em;opacity:${(Math.random()*.35+.15).toFixed(2)};animation-duration:${(Math.random()*12+9).toFixed(1)}s;animation-delay:${(Math.random()*20).toFixed(1)}s`
+    s.appendChild(f)
+  }
+})()
+
+let res={}, cur=null
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+
+function render(){
+  const avail=GIFTS.length-Object.values(res).filter(Boolean).length
+  document.getElementById('badge-txt').textContent=
+    avail===0?'Tous les cadeaux sont réservés 🎉':`${avail} cadeau${avail>1?'x':''} disponible${avail>1?'s':''}`
+  document.getElementById('badge').hidden=false
+  document.getElementById('app').innerHTML=
+    `<div class="grid">${GIFTS.map(g=>{
+      const r=res[g.id]
+      return `<article class="card${r?' res':''}">
+        ${r?'<div class="ribbon" aria-hidden="true">Réservé</div>':''}
+        ${g.img?`<img class="prod-img" src="${g.img}" alt="${esc(g.name)}" loading="lazy">`:''}
+        <span class="icon" aria-hidden="true">${g.icon}</span>
+        <div class="cat">${g.cat}</div>
+        <div class="name">${g.name}</div>
+        ${g.dtl?`<div class="dtl">${g.dtl}</div>`:''}
+        <div class="price">${g.price}</div>
+        <a class="lnk" href="${g.url}" target="_blank" rel="noopener noreferrer">🔗 Voir chez ${g.shop}</a>
+        ${r
+          ?`<div class="rby">🎁 Réservé par <strong>${esc(r.by)}</strong></div>`
+          :`<button class="btn-r" onclick="open_('${g.id}')">🎁 Je l'offre !</button>`
+        }
+      </article>`
+    }).join('')}</div>`
+}
+
+async function load(){
+  try{const r=await fetch('/api/reservations');res=await r.json()}catch(e){}
+  render()
+}
+
+function open_(id){
+  const g=GIFTS.find(x=>x.id===id);if(!g)return
+  cur=g
+  document.getElementById('m-icon').textContent=g.icon
+  document.getElementById('modal-h').textContent=g.name
+  document.getElementById('name-inp').value=''
+  document.getElementById('name-inp').classList.remove('err')
+  document.getElementById('btn-ok').textContent='🎁 Réserver'
+  document.getElementById('btn-ok').disabled=false
+  document.getElementById('modal').hidden=false
+  setTimeout(()=>document.getElementById('name-inp').focus(),60)
+}
+function close_(){document.getElementById('modal').hidden=true;cur=null}
+
+document.getElementById('btn-cancel').onclick=close_
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))close_()})
+document.getElementById('name-inp').addEventListener('keydown',e=>{if(e.key==='Enter')doRes();if(e.key==='Escape')close_()})
+document.getElementById('btn-ok').onclick=doRes
+
+async function doRes(){
+  const name=document.getElementById('name-inp').value.trim()
+  if(!name){document.getElementById('name-inp').classList.add('err');document.getElementById('name-inp').focus();return}
+  const btn=document.getElementById('btn-ok')
+  btn.disabled=true;btn.textContent='⏳ Réservation…'
+  try{
+    const r=await fetch(`/api/gift/${cur.id}`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name})
+    })
+    if(r.ok){
+      res[cur.id]={by:name}
+      close_();toast(`🎁 Merci ${esc(name)} ! Cadeau réservé.`,'tok');render()
+    }else if(r.status===409){
+      const d=await r.json()
+      close_();toast(`❌ Déjà réservé par ${esc(d.by||'quelqu\'un')} !`,'terr')
+      load()
+    }else{
+      toast('❌ Erreur, réessaie.','terr')
+      btn.disabled=false;btn.textContent='🎁 Réserver'
+    }
+  }catch(e){
+    toast('❌ Erreur de connexion.','terr')
+    btn.disabled=false;btn.textContent='🎁 Réserver'
+  }
+}
+
+let tt=null
+function toast(msg,cls){
+  document.querySelector('.toast')?.remove();clearTimeout(tt)
+  const el=document.createElement('div')
+  el.className=`toast ${cls}`;el.textContent=msg;el.setAttribute('role','status')
+  document.body.appendChild(el)
+  tt=setTimeout(()=>el.remove(),3400)
+}
+
+load()
+setInterval(load,30000)
+</script>
+</body>
+</html>
