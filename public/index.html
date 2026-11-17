@@ -70,7 +70,8 @@
       background:var(--sf);border:1px solid var(--bdr);
       border-radius:16px;padding:1.4rem;box-shadow:var(--sh);
       position:relative;overflow:hidden;
-      transition:transform .2s,border-color .2s,box-shadow .2s
+      transition:transform .2s,border-color .2s,box-shadow .2s;
+      display:flex;flex-direction:column
     }
     .card:not(.res):hover{
       transform:translateY(-4px);
@@ -79,20 +80,21 @@
     }
     .card.res{opacity:.48;filter:grayscale(55%)}
     .prod-img{
-      width:100%;height:160px;object-fit:cover;
+      width:100%;height:210px;object-fit:contain;
       border-radius:10px;margin-bottom:.85rem;
-      background:rgba(255,255,255,.04);display:block
+      background:rgba(255,255,255,.06);display:block;
+      padding:6px
     }
-    @media(max-width:540px){.prod-img{height:120px}}
+    @media(max-width:540px){.prod-img{height:160px}}
     .icon{font-size:2.2rem;display:block;margin-bottom:.7rem}
     .cat{font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;
       color:var(--gold);font-weight:600;margin-bottom:.35rem}
     .name{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;
       font-weight:600;line-height:1.3;margin-bottom:.3rem;text-wrap:balance}
-    .dtl{font-size:.8rem;color:var(--fg2);margin-bottom:.55rem}
+    .dtl{font-size:.8rem;color:var(--fg2);margin-bottom:.55rem;min-height:1.1em}
     .price{font-size:1.4rem;font-weight:700;color:var(--gold);
       font-variant-numeric:tabular-nums;margin-bottom:.85rem;
-      font-family:'Space Grotesk',sans-serif}
+      font-family:'Space Grotesk',sans-serif;margin-top:auto}
     .lnk{
       display:inline-flex;align-items:center;gap:.3rem;
       color:var(--fg2);text-decoration:none;font-size:.78rem;
@@ -224,12 +226,12 @@
 
 <script>
 const GIFTS = [
-  {id:'knit-808',               name:'Knit 808 Vision',           img:'https://808.vision/cdn/shop/files/13565E2C-5E07-4CD1-9971-A64746ABB393.png?v=1772642411',                                                       price:'80€',       shop:'808 Vision',    url:'https://808.vision/products/knit-mesh-black',                                                       cat:'Accessoire',  dtl:'',          icon:'🧢'},
+  {id:'knit-808',               name:'Knit 808 Vision',           img:'https://808.vision/cdn/shop/files/13565E2C-5E07-4CD1-9971-A64746ABB393.png?v=1772642411',                                                       price:'80€',       shop:'808 Vision',    url:'https://808.vision/products/knit-mesh-black',                                                       cat:'Accessoire',  dtl:'Taille M',  icon:'🧢'},
   {id:'pull-rose-scuffers',     name:'Pull Rose Scuffers',         img:'https://scuffers.com/cdn/shop/files/EmptyName6_75bb776a-fad5-4f7c-871e-b087d2ac3755.jpg?height=600&v=1786968853',                               price:'89€',       shop:'Scuffers',       url:'https://scuffers.com/collections/hoodies/products/original-pink-hoodie',                           cat:'Vêtement',    dtl:'Taille M',  icon:'🌸'},
   {id:'pull-mariniere-scuffers',name:'Pull Marinière Scuffers',    img:'https://scuffers.com/cdn/shop/files/ECOM_1.jpg?height=600&v=1788867488',                                                                         price:'89€',       shop:'Scuffers',       url:'https://scuffers.com/collections/hoodies/products/carpet-yellow-hoodie',                           cat:'Vêtement',    dtl:'Taille M',  icon:'🎨'},
   {id:'clavier-logitech',       name:'Clavier Logitech Sans Fil',  img:'https://m.media-amazon.com/images/I/61wuD7T-WLL._AC_SL500_.jpg',                                                                                price:'119,99€',   shop:'Amazon',         url:'https://www.amazon.fr/dp/B0D3HHXB9Y/',                                                              cat:'Tech',         dtl:'',          icon:'⌨️'},
   {id:'jogging-divinbydivin',   name:'Jogging DivinByDivin',       img:'https://divinbydivin.com/cdn/shop/files/jogg-black_277664a0-caf1-4d7c-886e-ab8cd04d8ae6.jpg?v=1733221089',                                      price:'109,95€',   shop:'Divin By Divin', url:'https://divinbydivin.com/products/black-line-jogger',                                                   cat:'Vêtement',    dtl:'Taille M',  icon:'🖤'},
-  {id:'akimbo-lows',            name:'Akimbo Lows',                img:'https://www.vicinityclo.de/cdn/shop/files/Untitled-1_0075_Layer0copy3.jpg?v=1739264338',                                                        price:'24,99€',    shop:'Vicinity',       url:'https://www.vicinityclo.de/products/akimbo-lows-serge-blues',                                           cat:'Chaussures',  dtl:'Taille 43', icon:'👟'},
+  {id:'akimbo-lows',            name:'Akimbo Lows',                img:'https://www.vicinityclo.de/cdn/shop/files/Untitled-1_0075_Layer0copy3.jpg?v=1739264338',                                                        price:'134,99€',   shop:'Vicinity',       url:'https://www.vicinityclo.de/products/akimbo-lows-serge-blues',                                           cat:'Chaussures',  dtl:'Taille 43', icon:'👟'},
   {id:'pantalon-camo-beige',    name:'Pantalon Camo Beige',        img:'https://static.zara.net/assets/public/a6fe/c4ce/2a224aea8919/e46734810d1e/06917300021-p/06917300021-p.jpg?ts=1786375129205&w=560',               price:'22,99€',    shop:'Zara',           url:'https://www.zara.com/fr/fr/pantalon-coupe-ballon-imprime-abstrait-p06917300.html?v1=550292797',       cat:'Vêtement',    dtl:'',          icon:'🍂'},
   {id:'jean-camo-gris',         name:'Jean Camo Gris Beige',       img:'https://static.zara.net/assets/public/2830/b0c9/961b464c9636/a1119684cd6d/02005805806-p/02005805806-p.jpg?ts=1791283248414&w=560',               price:'39,95€',    shop:'Zara',           url:'https://www.zara.com/fr/fr/pantalon-coupe-decontractee-imprime-abstrait-p02005805.html?v1=568076212', cat:'Vêtement',    dtl:'',          icon:'🩶'},
 ]
@@ -262,7 +264,7 @@ function render(){
         <span class="icon" aria-hidden="true">${g.icon}</span>
         <div class="cat">${g.cat}</div>
         <div class="name">${g.name}</div>
-        ${g.dtl?`<div class="dtl">${g.dtl}</div>`:''}
+        <div class="dtl">${g.dtl}</div>
         <div class="price">${g.price}</div>
         <a class="lnk" href="${g.url}" target="_blank" rel="noopener noreferrer">🔗 Voir chez ${g.shop}</a>
         ${r
