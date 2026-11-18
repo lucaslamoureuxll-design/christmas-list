@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Liste de Noël de Lucas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600&display=swap">
   <style>
     :root {
       color-scheme: dark;
@@ -29,7 +29,7 @@
         radial-gradient(ellipse 60% 50% at 85% 90%, rgba(100,20,20,.45) 0%, transparent 60%),
         radial-gradient(ellipse 100% 80% at 50% 50%, #0a1428 0%, #060e1c 100%);
       color:var(--fg);
-      font-family:'DM Sans',system-ui,sans-serif;
+      font-family:'Inter',system-ui,sans-serif;
       overflow-x:hidden;
       min-height:100vh;
     }
@@ -58,12 +58,12 @@
     .eyebrow{
       display:inline-block;margin-bottom:.75rem;
       font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.22em;
-      color:var(--gold);opacity:.75;font-family:'DM Sans',sans-serif
+      color:var(--gold);opacity:.75;font-family:'Inter',sans-serif
     }
     h1{
-      font-family:'Syne',sans-serif;
-      font-size:clamp(2.2rem,6vw,4rem);font-weight:800;
-      letter-spacing:-.035em;line-height:1.05;text-wrap:balance;
+      font-family:'Playfair Display',Georgia,serif;
+      font-size:clamp(2.2rem,6vw,4rem);font-weight:900;
+      letter-spacing:-.01em;line-height:1.05;text-wrap:balance;
       background:linear-gradient(135deg,#fff 0%,var(--gold) 55%,#ff9060 100%);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
@@ -131,13 +131,13 @@
 
     .cat{font-size:.62rem;text-transform:uppercase;letter-spacing:.18em;
       color:var(--gold);font-weight:600;margin-bottom:.3rem;opacity:.85}
-    .name{font-family:'Syne',sans-serif;font-size:1.02rem;font-weight:700;
-      line-height:1.25;margin-bottom:.3rem;text-wrap:balance;letter-spacing:-.01em}
+    .name{font-family:'Playfair Display',Georgia,serif;font-size:1rem;font-weight:700;
+      line-height:1.25;margin-bottom:.3rem;text-wrap:balance;letter-spacing:0}
     .dtl{font-size:.78rem;color:var(--fg2);margin-bottom:.5rem;min-height:1.1em}
     .price{
-      font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;
+      font-family:'Playfair Display',Georgia,serif;font-size:1.4rem;font-weight:900;
       color:var(--gold);font-variant-numeric:tabular-nums;
-      margin-bottom:.8rem;margin-top:auto;letter-spacing:-.02em
+      margin-bottom:.8rem;margin-top:auto;letter-spacing:0
     }
     .lnk{
       display:inline-flex;align-items:center;gap:.35rem;
@@ -153,7 +153,7 @@
       background:linear-gradient(135deg,var(--red) 0%,#c02828 100%);
       color:#fff;border:none;border-radius:12px;
       font-size:.88rem;font-weight:600;cursor:pointer;
-      font-family:'DM Sans',inherit;letter-spacing:.01em;
+      font-family:'Inter',inherit;letter-spacing:.01em;
       transition:transform .25s cubic-bezier(.34,1.56,.64,1),
                  box-shadow .25s ease,
                  background .2s ease;
@@ -213,8 +213,8 @@
     }
     @keyframes mIn{from{transform:translateY(20px) scale(.94);opacity:0}to{transform:none;opacity:1}}
     .modal h2{
-      font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;
-      color:var(--gold);margin-bottom:.4rem;text-wrap:balance;letter-spacing:-.02em
+      font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;font-weight:800;
+      color:var(--gold);margin-bottom:.4rem;text-wrap:balance;letter-spacing:0
     }
     .modal p{font-size:.87rem;color:var(--fg2);margin-bottom:1.3rem;line-height:1.6}
     input[type=text]{
@@ -222,7 +222,7 @@
       background:rgba(255,255,255,.07);
       border:1px solid rgba(255,255,255,.14);
       border-radius:12px;color:var(--fg);font-size:.97rem;
-      font-family:'DM Sans',inherit;outline:none;
+      font-family:'Inter',inherit;outline:none;
       transition:border-color .2s ease,box-shadow .2s ease;
       margin-bottom:1.2rem;
       backdrop-filter:blur(8px)
@@ -239,7 +239,7 @@
       background:rgba(255,255,255,.07);
       color:var(--fg2);border:1px solid rgba(255,255,255,.12);
       border-radius:12px;cursor:pointer;font-size:.87rem;
-      font-family:'DM Sans',inherit;
+      font-family:'Inter',inherit;
       transition:background .2s ease,transform .2s ease
     }
     .bcl:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
@@ -248,7 +248,7 @@
       background:linear-gradient(135deg,var(--red),#b82020);
       color:#fff;border:none;border-radius:12px;
       cursor:pointer;font-size:.87rem;font-weight:600;
-      font-family:'DM Sans',inherit;
+      font-family:'Inter',inherit;
       transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease;
       box-shadow:0 4px 16px rgba(224,48,48,.3)
     }
@@ -264,7 +264,7 @@
       font-size:.9rem;font-weight:600;z-index:200;white-space:nowrap;
       backdrop-filter:blur(20px);
       box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.15);
-      animation:ta 3.2s forwards;pointer-events:none;font-family:'DM Sans',inherit
+      animation:ta 3.2s forwards;pointer-events:none;font-family:'Inter',inherit
     }
     .tok{background:rgba(42,122,58,.85);color:#fff;border:1px solid rgba(80,200,100,.25)}
     .terr{background:rgba(192,52,28,.85);color:#fff;border:1px solid rgba(255,80,60,.25)}
