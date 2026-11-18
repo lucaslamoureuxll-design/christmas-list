@@ -305,11 +305,10 @@
 <div class="ov" id="modal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-h">
     <h2 id="modal-h"></h2>
-    <p>Entrez votre prénom pour réserver ce cadeau. Les autres verront qu'il est déjà pris.</p>
-    <input type="text" id="name-inp" placeholder="Votre prénom..." maxlength="30" autocomplete="given-name">
+    <p>Confirmer la réservation de ce cadeau ? La réservation est anonyme.</p>
     <div class="mbtns">
       <button class="bcl" id="btn-cancel">Annuler</button>
-      <button class="bok" id="btn-ok">Réserver</button>
+      <button class="bok" id="btn-ok">Confirmer</button>
     </div>
   </div>
 </div>
@@ -359,7 +358,7 @@ function render(){
         <div class="price">${g.price}</div>
         <a class="lnk" href="${g.url}" target="_blank" rel="noopener noreferrer">Voir chez ${g.shop} <span class="lnk-arr">↗</span></a>
         ${r
-          ?`<div class="rby">Réservé par <strong>${esc(r.by)}</strong></div>`
+          ?`<div class="rby">Déjà réservé</div>`
           :`<button class="btn-r" onclick="open_('${g.id}')">Je l'offre</button>`
         }
       </article>`
@@ -375,44 +374,37 @@ function open_(id){
   const g=GIFTS.find(x=>x.id===id);if(!g)return
   cur=g
   document.getElementById('modal-h').textContent=g.name
-  document.getElementById('name-inp').value=''
-  document.getElementById('name-inp').classList.remove('err')
-  document.getElementById('btn-ok').textContent='Réserver'
+  document.getElementById('btn-ok').textContent='Confirmer'
   document.getElementById('btn-ok').disabled=false
   document.getElementById('modal').hidden=false
-  setTimeout(()=>document.getElementById('name-inp').focus(),60)
 }
 function close_(){document.getElementById('modal').hidden=true;cur=null}
 
 document.getElementById('btn-cancel').onclick=close_
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))close_()})
-document.getElementById('name-inp').addEventListener('keydown',e=>{if(e.key==='Enter')doRes();if(e.key==='Escape')close_()})
 document.getElementById('btn-ok').onclick=doRes
 
 async function doRes(){
-  const name=document.getElementById('name-inp').value.trim()
-  if(!name){document.getElementById('name-inp').classList.add('err');document.getElementById('name-inp').focus();return}
   const btn=document.getElementById('btn-ok')
   btn.disabled=true;btn.textContent='Réservation...'
   try{
     const r=await fetch(`/api/gift/${cur.id}`,{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name})
+      body:JSON.stringify({})
     })
     if(r.ok){
-      res[cur.id]={by:name}
-      close_();toast(`Merci ${esc(name)} ! Cadeau réservé.`,'tok');render()
+      res[cur.id]={reserved:true}
+      close_();toast('Cadeau réservé !','tok');render()
     }else if(r.status===409){
-      const d=await r.json()
-      close_();toast(`Déjà réservé par ${esc(d.by||'quelqu\'un')} !`,'terr')
+      close_();toast('Ce cadeau est déjà réservé !','terr')
       load()
     }else{
       toast('Erreur, réessaie.','terr')
-      btn.disabled=false;btn.textContent='Réserver'
+      btn.disabled=false;btn.textContent='Confirmer'
     }
   }catch(e){
     toast('Erreur de connexion.','terr')
-    btn.disabled=false;btn.textContent='Réserver'
+    btn.disabled=false;btn.textContent='Confirmer'
   }
 }
 
