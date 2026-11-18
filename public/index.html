@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Liste de Noël de Lucas</title>
+  <title>Liste de la Tortue</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%84%3C/text%3E%3C/svg%3E">
@@ -83,6 +83,17 @@
     }
     .countdown{font-size:.78rem;color:var(--fg2);margin-top:.5rem;letter-spacing:.03em}
     .countdown b{color:var(--gold);font-weight:700}
+    .mascotte{
+      font-size:3.2rem;display:block;margin:.4rem 0 .2rem;
+      cursor:default;user-select:none;
+      filter:drop-shadow(0 4px 14px rgba(60,180,80,.35));
+      animation:tortueWiggle 3.5s ease-in-out infinite
+    }
+    @keyframes tortueWiggle{
+      0%,100%{transform:scale(1) rotate(-4deg)}
+      30%{transform:scale(1.1) rotate(0deg)}
+      60%{transform:scale(1.06) rotate(4deg)}
+    }
     @keyframes sparkFade{
       0%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
       100%{opacity:0;transform:translate(-50%,-220%) scale(0.1)}
@@ -308,7 +319,8 @@
 <div class="page">
   <header>
     <div class="eyebrow">Noel 2024</div>
-    <h1>Liste de Lucas</h1>
+    <span class="mascotte">🐢</span>
+    <h1>Liste de la Tortue</h1>
     <p class="sub">Réservez un cadeau pour qu'il ne soit pas offert deux fois.</p>
     <p class="countdown" id="countdown"></p>
     <div class="badge" id="badge" hidden>
@@ -336,7 +348,6 @@ const GIFTS = [
   {id:'knit-808',               name:'Knit 808 Vision',           img:'https://808.vision/cdn/shop/files/13565E2C-5E07-4CD1-9971-A64746ABB393.png?v=1772642411',                                                       price:'80€',       shop:'808 Vision',    url:'https://808.vision/products/knit-mesh-black',                                                       cat:'Accessoire',  dtl:'Taille M'},
   {id:'pull-rose-scuffers',     name:'Pull Rose Scuffers',         img:'https://scuffers.com/cdn/shop/files/EmptyName6_75bb776a-fad5-4f7c-871e-b087d2ac3755.jpg?height=600&v=1786968853',                               price:'89€',       shop:'Scuffers',       url:'https://scuffers.com/collections/hoodies/products/original-pink-hoodie',                           cat:'Vêtement',    dtl:'Taille M'},
   {id:'pull-mariniere-scuffers',name:'Pull Marinière Scuffers',    img:'https://scuffers.com/cdn/shop/files/ECOM_1.jpg?height=600&v=1788867488',                                                                         price:'89€',       shop:'Scuffers',       url:'https://scuffers.com/collections/hoodies/products/carpet-yellow-hoodie',                           cat:'Vêtement',    dtl:'Taille M'},
-  {id:'clavier-logitech',       name:'Clavier Logitech Sans Fil',  img:'https://m.media-amazon.com/images/I/61wuD7T-WLL._AC_SL500_.jpg',                                                                                price:'119,99€',   shop:'Amazon',         url:'https://www.amazon.fr/dp/B0D3HHXB9Y/',                                                              cat:'Tech',         dtl:''},
   {id:'jogging-divinbydivin',   name:'Jogging DivinByDivin',       img:'https://divinbydivin.com/cdn/shop/files/jogg-black_277664a0-caf1-4d7c-886e-ab8cd04d8ae6.jpg?v=1733221089',                                      price:'109,95€',   shop:'Divin By Divin', url:'https://divinbydivin.com/products/black-line-jogger',                                                   cat:'Vêtement',    dtl:'Taille M'},
   {id:'akimbo-lows',            name:'Akimbo Lows',                img:'https://www.vicinityclo.de/cdn/shop/files/Untitled-1_0075_Layer0copy3.jpg?v=1739264338',                                                        price:'134,99€',   shop:'Vicinity',       url:'https://www.vicinityclo.de/products/akimbo-lows-serge-blues',                                           cat:'Chaussures',  dtl:'Taille 43'},
   {id:'pantalon-camo-beige',    name:'Pantalon Camo Beige',        img:'https://static.zara.net/assets/public/a6fe/c4ce/2a224aea8919/e46734810d1e/06917300021-p/06917300021-p.jpg?ts=1786375129205&w=560',               price:'22,99€',    shop:'Zara',           url:'https://www.zara.com/fr/fr/pantalon-coupe-ballon-imprime-abstrait-p06917300.html?v1=550292797',       cat:'Vêtement',    dtl:''},
