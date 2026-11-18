@@ -370,16 +370,21 @@ const GIFTS = [
 let res={}, cur=null, mode='reserve'
 let myTokens={}
 try{myTokens=JSON.parse(localStorage.getItem('xmas_tokens')||'{}')}catch(e){}
+const isMoi=new URLSearchParams(location.search).has('moi')
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
 
 function render(){
-  const avail=GIFTS.length-Object.values(res).filter(Boolean).length
-  document.getElementById('badge-txt').textContent=
-    avail===0?'Tous les cadeaux sont réservés':`${avail} cadeau${avail>1?'x':''} disponible${avail>1?'s':''}`
-  document.getElementById('badge').hidden=false
+  if(isMoi){
+    document.getElementById('badge').hidden=true
+  } else {
+    const avail=GIFTS.length-Object.values(res).filter(Boolean).length
+    document.getElementById('badge-txt').textContent=
+      avail===0?'Tous les cadeaux sont réservés':`${avail} cadeau${avail>1?'x':''} disponible${avail>1?'s':''}`
+    document.getElementById('badge').hidden=false
+  }
   document.getElementById('app').innerHTML=
     `<div class="grid">${GIFTS.map(g=>{
-      const r=res[g.id]
+      const r=isMoi?null:res[g.id]
       return `<article class="card${r?' res':''}">
         ${r?'<div class="ribbon" aria-hidden="true">Réservé</div>':''}
         ${g.img?`<img class="prod-img" src="${g.img}" alt="${esc(g.name)}" loading="lazy">`:''}
