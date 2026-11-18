@@ -368,6 +368,8 @@ const GIFTS = [
 })()
 
 let res={}, cur=null, mode='reserve'
+let myTokens={}
+try{myTokens=JSON.parse(localStorage.getItem('xmas_tokens')||'{}')}catch(e){}
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
 
 function render(){
@@ -387,7 +389,7 @@ function render(){
         <div class="price">${g.price}</div>
         <a class="lnk" href="${g.url}" target="_blank" rel="noopener noreferrer">Voir chez ${g.shop} <span class="lnk-arr">↗</span></a>
         ${r
-          ?`<div class="rby">Déjà réservé<button class="btn-unres" onclick="cancel_('${g.id}')">Annuler</button></div>`
+          ?`<div class="rby">Déjà réservé${myTokens[g.id]?`<button class="btn-unres" onclick="cancel_('${g.id}')">Annuler</button>`:''}</div>`
           :`<button class="btn-r" onclick="open_('${g.id}')">Je l'offre</button>`
         }
       </article>`
@@ -431,8 +433,8 @@ async function doRes(){
   if(mode==='cancel'){
     btn.textContent='Annulation...'
     try{
-      const r=await fetch(`/api/gift/${cur.id}`,{method:'DELETE'})
-      if(r.ok){delete res[cur.id];close_();toast('Réservation annulée.','tok');render()}
+      const r=await fetch(`/api/gift/${cur.id}`,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:myTokens[cur.id]||''})})
+      if(r.ok){delete res[cur.id];delete myTokens[cur.id];try{localStorage.setItem('xmas_tokens',JSON.stringify(myTokens))}catch(e){};close_();toast('Réservation annulée.','tok');render()}
       else{toast('Erreur, réessaie.','terr');btn.disabled=false;btn.textContent='Annuler la réservation'}
     }catch(e){toast('Erreur de connexion.','terr');btn.disabled=false;btn.textContent='Annuler la réservation'}
     return
@@ -443,7 +445,9 @@ async function doRes(){
       method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})
     })
     if(r.ok){
+      const data=await r.json()
       res[cur.id]={reserved:true}
+      if(data.token){myTokens[cur.id]=data.token;try{localStorage.setItem('xmas_tokens',JSON.stringify(myTokens))}catch(e){}}
       close_();toast('Cadeau réservé !','tok');render()
     }else if(r.status===409){
       close_();toast('Ce cadeau est déjà réservé !','terr');load()
