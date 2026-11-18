@@ -6,6 +6,7 @@
   <title>Liste de Noël de Lucas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%84%3C/text%3E%3C/svg%3E">
   <style>
     :root {
       color-scheme: dark;
@@ -79,6 +80,12 @@
       border-radius:30px;padding:.45rem 1.1rem;
       font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.03em;
       backdrop-filter:blur(12px)
+    }
+    .countdown{font-size:.78rem;color:var(--fg2);margin-top:.5rem;letter-spacing:.03em}
+    .countdown b{color:var(--gold);font-weight:700}
+    @keyframes sparkFade{
+      0%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
+      100%{opacity:0;transform:translate(-50%,-220%) scale(0.1)}
     }
 
     /* Grid */
@@ -303,6 +310,7 @@
     <div class="eyebrow">Noel 2024</div>
     <h1>Liste de Lucas</h1>
     <p class="sub">Réservez un cadeau pour qu'il ne soit pas offert deux fois.</p>
+    <p class="countdown" id="countdown"></p>
     <div class="badge" id="badge" hidden>
       <span id="badge-txt"></span>
     </div>
@@ -444,6 +452,41 @@ function toast(msg,cls){
   document.body.appendChild(el)
   tt=setTimeout(()=>el.remove(),3400)
 }
+
+function xmasCountdown(){
+  const now=new Date(),xmas=new Date(now.getFullYear(),11,25)
+  if(now>xmas)xmas.setFullYear(xmas.getFullYear()+1)
+  const d=Math.floor((xmas-now)/864e5)
+  const el=document.getElementById('countdown');if(!el)return
+  if(d===0)el.innerHTML='🎄 C\'est <b>aujourd\'hui</b> !'
+  else if(d===1)el.innerHTML='Plus que <b>1 jour</b> avant Noël !'
+  else el.innerHTML=`<b>J-${d}</b> avant Noël`
+}
+xmasCountdown();setInterval(xmasCountdown,60000)
+
+let _lsp=0
+document.addEventListener('mousemove',e=>{
+  const now=Date.now();if(now-_lsp<55)return;_lsp=now
+  const s=document.createElement('span')
+  s.textContent=['✦','✧','★','·','⬥'][Math.floor(Math.random()*5)]
+  s.style.cssText=`position:fixed;left:${e.clientX}px;top:${e.clientY}px;pointer-events:none;z-index:9999;font-size:${6+Math.random()*9}px;color:#f0c040;animation:sparkFade .65s forwards;transform:translate(-50%,-50%)`
+  document.body.appendChild(s);setTimeout(()=>s.remove(),700)
+})
+
+let _hc=0,_ht=null
+document.querySelector('h1').addEventListener('click',()=>{
+  _hc++;clearTimeout(_ht);_ht=setTimeout(()=>_hc=0,1200)
+  if(_hc>=3){
+    _hc=0;const p=document.getElementById('particles')
+    const em=['🎅','🤶','🎄','⭐','🦌']
+    for(let i=0;i<22;i++){
+      const s=document.createElement('span');s.className='ptcl'
+      s.textContent=em[i%em.length]
+      s.style.cssText=`left:${(Math.random()*100).toFixed(1)}vw;font-size:${(Math.random()*1.5+.9).toFixed(2)}em;animation-duration:${(Math.random()*2+1.2).toFixed(1)}s;animation-delay:0s;opacity:.7`
+      p.appendChild(s);setTimeout(()=>s.remove(),4000)
+    }
+  }
+})
 
 load()
 setInterval(load,30000)
