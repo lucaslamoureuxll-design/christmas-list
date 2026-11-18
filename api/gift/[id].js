@@ -3,6 +3,11 @@ const { kv } = require('@vercel/kv')
 module.exports = async function handler(req, res) {
   const { id } = req.query
 
+  if (req.method === 'DELETE') {
+    await kv.del(`reservation:${id}`)
+    return res.json({ ok: true })
+  }
+
   if (req.method !== 'POST') return res.status(405).end()
 
   try {

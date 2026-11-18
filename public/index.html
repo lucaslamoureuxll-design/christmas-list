@@ -120,14 +120,16 @@
 
     /* Product image */
     .prod-img{
-      width:100%;height:210px;object-fit:contain;
-      border-radius:14px;margin-bottom:1rem;
+      width:calc(100% + 2.8rem);height:210px;object-fit:cover;
+      border-radius:0;margin:-1.4rem -1.4rem 1rem;
       background:rgba(255,255,255,.06);display:block;
-      padding:8px;flex-shrink:0;
+      flex-shrink:0;
       transition:transform .3s cubic-bezier(.34,1.56,.64,1)
     }
-    .card:not(.res):hover .prod-img{transform:scale(1.03)}
-    @media(max-width:540px){.prod-img{height:160px}}
+    .card:not(.res):hover .prod-img{transform:scale(1.04)}
+    @media(max-width:540px){
+      .prod-img{height:160px;width:calc(100% + 2rem);margin:-1rem -1rem .85rem}
+    }
 
     .cat{font-size:.62rem;text-transform:uppercase;letter-spacing:.18em;
       color:var(--gold);font-weight:600;margin-bottom:.3rem;opacity:.85}
@@ -173,6 +175,14 @@
       border:1px solid rgba(255,255,255,.07)
     }
     .rby strong{color:var(--fg)}
+    .btn-unres{
+      margin-left:auto;background:none;border:none;cursor:pointer;
+      color:var(--fg2);font-size:.72rem;font-family:'Nunito',inherit;
+      padding:.15rem .4rem;border-radius:6px;
+      text-decoration:underline;text-underline-offset:2px;
+      transition:color .15s,background .15s
+    }
+    .btn-unres:hover{color:var(--red);background:rgba(224,48,48,.1)}
 
     /* Ribbon */
     .ribbon{
@@ -305,10 +315,10 @@
 <div class="ov" id="modal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-h">
     <h2 id="modal-h"></h2>
-    <p>Confirmer la réservation de ce cadeau ? La réservation est anonyme.</p>
+    <p id="modal-p"></p>
     <div class="mbtns">
-      <button class="bcl" id="btn-cancel">Annuler</button>
-      <button class="bok" id="btn-ok">Confirmer</button>
+      <button class="bcl" id="btn-cancel">Fermer</button>
+      <button class="bok" id="btn-ok"></button>
     </div>
   </div>
 </div>
@@ -338,7 +348,7 @@ const GIFTS = [
   }
 })()
 
-let res={}, cur=null
+let res={}, cur=null, mode='reserve'
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
 
 function render(){
@@ -358,7 +368,7 @@ function render(){
         <div class="price">${g.price}</div>
         <a class="lnk" href="${g.url}" target="_blank" rel="noopener noreferrer">Voir chez ${g.shop} <span class="lnk-arr">↗</span></a>
         ${r
-          ?`<div class="rby">Déjà réservé</div>`
+          ?`<div class="rby">Déjà réservé<button class="btn-unres" onclick="cancel_('${g.id}')">Annuler</button></div>`
           :`<button class="btn-r" onclick="open_('${g.id}')">Je l'offre</button>`
         }
       </article>`
@@ -372,9 +382,21 @@ async function load(){
 
 function open_(id){
   const g=GIFTS.find(x=>x.id===id);if(!g)return
-  cur=g
+  cur=g;mode='reserve'
   document.getElementById('modal-h').textContent=g.name
+  document.getElementById('modal-p').textContent='Confirmer la réservation de ce cadeau ? La réservation est anonyme.'
   document.getElementById('btn-ok').textContent='Confirmer'
+  document.getElementById('btn-ok').style.background=''
+  document.getElementById('btn-ok').disabled=false
+  document.getElementById('modal').hidden=false
+}
+function cancel_(id){
+  const g=GIFTS.find(x=>x.id===id);if(!g)return
+  cur=g;mode='cancel'
+  document.getElementById('modal-h').textContent=g.name
+  document.getElementById('modal-p').textContent='Annuler la réservation de ce cadeau ?'
+  document.getElementById('btn-ok').textContent='Annuler la réservation'
+  document.getElementById('btn-ok').style.background='rgba(255,255,255,.12)'
   document.getElementById('btn-ok').disabled=false
   document.getElementById('modal').hidden=false
 }
@@ -386,25 +408,31 @@ document.getElementById('btn-ok').onclick=doRes
 
 async function doRes(){
   const btn=document.getElementById('btn-ok')
-  btn.disabled=true;btn.textContent='Réservation...'
+  btn.disabled=true
+  if(mode==='cancel'){
+    btn.textContent='Annulation...'
+    try{
+      const r=await fetch(`/api/gift/${cur.id}`,{method:'DELETE'})
+      if(r.ok){delete res[cur.id];close_();toast('Réservation annulée.','tok');render()}
+      else{toast('Erreur, réessaie.','terr');btn.disabled=false;btn.textContent='Annuler la réservation'}
+    }catch(e){toast('Erreur de connexion.','terr');btn.disabled=false;btn.textContent='Annuler la réservation'}
+    return
+  }
+  btn.textContent='Réservation...'
   try{
     const r=await fetch(`/api/gift/${cur.id}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({})
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})
     })
     if(r.ok){
       res[cur.id]={reserved:true}
       close_();toast('Cadeau réservé !','tok');render()
     }else if(r.status===409){
-      close_();toast('Ce cadeau est déjà réservé !','terr')
-      load()
+      close_();toast('Ce cadeau est déjà réservé !','terr');load()
     }else{
-      toast('Erreur, réessaie.','terr')
-      btn.disabled=false;btn.textContent='Confirmer'
+      toast('Erreur, réessaie.','terr');btn.disabled=false;btn.textContent='Confirmer'
     }
   }catch(e){
-    toast('Erreur de connexion.','terr')
-    btn.disabled=false;btn.textContent='Confirmer'
+    toast('Erreur de connexion.','terr');btn.disabled=false;btn.textContent='Confirmer'
   }
 }
 
