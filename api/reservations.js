@@ -1,9 +1,11 @@
 const { kv } = require('@vercel/kv')
 
 const GIFT_IDS = [
+  'jogger-vicinity-black', 'bentley-navy-scuffers', 'ivory-denim-pepe',
+  'darkblue-denim-pepe', 'pull-rond-bershka', 'pull-boxy-bershka',
+  'pull-polo-rayures', 'pull-polo-brode',
   'knit-808', 'pull-rose-scuffers', 'pull-mariniere-scuffers',
-  'clavier-logitech', 'jogging-divinbydivin', 'akimbo-lows',
-  'pantalon-camo-beige', 'jean-camo-gris'
+  'jogging-divinbydivin', 'akimbo-lows', 'pantalon-camo-beige', 'jean-camo-gris'
 ]
 
 module.exports = async function handler(req, res) {
